@@ -1,0 +1,54 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: db_carrier
+    environment:
+      POSTGRES_DB: carrier
+      POSTGRES_USER: carrierDb
+      POSTGRES_PASSWORD: carrier_bd
+    ports:
+      - "5676:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - carrier-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U carrierDb -d carrier_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  kafka:
+    image: apache/kafka:4.3.1
+    container_name: kafka_carrier
+    ports:
+      - "9095:9095"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+      KAFKA_LISTENERS: "PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093,EXTERNAL://0.0.0.0:9095"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092,EXTERNAL://localhost:9095"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT"
+      KAFKA_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+      KAFKA_LOG_DIRS: "/tmp/kraft-combined-logs"
+      CLUSTER_ID: "4L62YDkVgCBm2vEQ6_6Ynw"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    networks:
+      - app-carrier
+
+
+
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  carrier-network:
+    driver: bridge
+  app-carrier:
+    driver: bridge
