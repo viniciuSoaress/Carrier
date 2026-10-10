@@ -1,7 +1,7 @@
-package collection.dto;
+package collection.user.dto;
 
-import collection.entity.User;
-import collection.entity.UserRole;
+import collection.user.entity.User;
+import collection.user.entity.UserRole;
 
 public record RegisterDTO(String name, String password, String email, UserRole role) {
 

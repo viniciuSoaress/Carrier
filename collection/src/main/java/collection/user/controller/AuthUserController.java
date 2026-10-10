@@ -1,9 +1,9 @@
-package collection.controller;
+package collection.user.controller;
 
-import collection.dto.AuthenticationDTO;
-import collection.dto.LoginResponseDTO;
-import collection.dto.RegisterDTO;
-import collection.service.AuthUserService;
+import collection.user.dto.AuthenticationDTO;
+import collection.user.dto.LoginResponseDTO;
+import collection.user.dto.RegisterDTO;
+import collection.user.service.AuthUserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

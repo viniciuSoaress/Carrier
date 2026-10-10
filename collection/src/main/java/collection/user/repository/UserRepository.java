@@ -1,6 +1,6 @@
-package collection.repository;
+package collection.user.repository;
 
-import collection.entity.User;
+import collection.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;

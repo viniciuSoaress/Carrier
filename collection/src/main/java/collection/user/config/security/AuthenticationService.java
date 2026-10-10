@@ -1,6 +1,6 @@
-package collection.config.security;
+package collection.user.config.security;
 
-import collection.repository.UserRepository;
+import collection.user.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

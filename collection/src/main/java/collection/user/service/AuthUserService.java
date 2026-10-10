@@ -1,12 +1,12 @@
-package collection.service;
+package collection.user.service;
 
-import collection.config.security.AuthenticationService;
-import collection.config.security.TokenService;
-import collection.dto.AuthenticationDTO;
-import collection.dto.LoginResponseDTO;
-import collection.dto.RegisterDTO;
-import collection.entity.User;
-import collection.repository.UserRepository;
+import collection.user.config.security.AuthenticationService;
+import collection.user.config.security.TokenService;
+import collection.user.dto.AuthenticationDTO;
+import collection.user.dto.LoginResponseDTO;
+import collection.user.dto.RegisterDTO;
+import collection.user.entity.User;
+import collection.user.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

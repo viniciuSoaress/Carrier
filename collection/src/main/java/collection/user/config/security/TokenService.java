@@ -1,6 +1,6 @@
-package collection.config.security;
+package collection.user.config.security;
 
-import collection.entity.User;
+import collection.user.entity.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;

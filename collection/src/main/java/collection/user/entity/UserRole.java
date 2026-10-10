@@ -1,4 +1,4 @@
-package collection.entity;
+package collection.user.entity;
 
 public enum UserRole {
     USER("user");
