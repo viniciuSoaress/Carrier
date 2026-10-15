@@ -44,6 +44,6 @@ public class AuthUserService {
         Authentication auth = this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         String token = this.tokenService.generateToken((User) auth.getPrincipal());
 
-        return new LoginResponseDTO(token);
+        return new LoginResponseDTO(token, ((User) auth.getPrincipal()).getId());
     }
 }

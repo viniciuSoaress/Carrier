@@ -1,4 +1,6 @@
 package collection.user.dto;
 
-public record LoginResponseDTO(String token) {
+import java.util.UUID;
+
+public record LoginResponseDTO(String token, UUID id) {
 }
