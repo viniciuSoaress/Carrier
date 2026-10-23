@@ -26,6 +26,16 @@ public class Collection {
     private Double weight;
     private CollectionStatus status = CollectionStatus.PENDING;
 
+
+    public Collection(String item_name, Integer quantity, Double weight, CollectionStatus status, User user, Address address){
+        this.item_name = item_name;
+        this.quantity = quantity;
+        this.weight = weight;
+        this.status = status;
+        this.user = user;
+        this.address = address;
+    }
+
     @JoinColumn(name = "users_id")
     @ManyToOne
     private User user;
