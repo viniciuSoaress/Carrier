@@ -1,4 +1,4 @@
-package requestCollection.collection.entity;
+package dto;
 
 public enum CollectionStatus {
     PENDING,
