@@ -1,5 +1,8 @@
 package requestCollection.collection.service;
 
+import dto.AddressDTO;
+import dto.CollectionSchema;
+import dto.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,31 +24,36 @@ public class CollectionService {
     private final CollectionRepository collectionRepository;
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
+    private final ProducerCollection producerCollection;
 
-    public CollectionService(CollectionRepository collectionRepository, UserRepository userRepository, AddressRepository addressRepository) {
+    public CollectionService(CollectionRepository collectionRepository, UserRepository userRepository, AddressRepository addressRepository, ProducerCollection producerCollection) {
         this.collectionRepository = collectionRepository;
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
+        this.producerCollection = producerCollection;
     }
 
     private User getUser(UUID userId){
-        return this.userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not folder."));
+        return this.userRepository.getReferenceById(userId);
     }
 
     public void createCollection(CollectionRequestDTO data){
 
-        Address address = this.addressRepository.findById(data.address_id())
-                .orElseThrow(() -> new IllegalArgumentException("Address not exist."));
+        Address address = this.addressRepository.getReferenceById(data.address_id());
         User user = getUser(data.users_id());
         Collection newCollection = new Collection(data.item_name(), data.quantity(), data.weight(), data.status(), user, address);
         this.collectionRepository.save(newCollection);
+
+        CollectionSchema schema = CollectionSchema.fromEntity(newCollection);
+
+        this.producerCollection.sendCollection(schema);
     }
 
     public String deleteCollection(UUID id){
-        Collection collection = this.collectionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not"));
-        this.collectionRepository.delete(collection);
-        return "Deletado";
+        boolean exist = this.collectionRepository.existsById(id);
+        if (exist) this.collectionRepository.deleteById(id);
+
+        return exist ? "Deletado." : "Não encontrado.";
     }
 
     public Page<CollectionResponseDTO> getAllCollection(UUID userId, int page, int size){

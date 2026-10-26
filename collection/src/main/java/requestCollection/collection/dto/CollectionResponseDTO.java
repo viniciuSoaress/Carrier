@@ -1,9 +1,9 @@
 package requestCollection.collection.dto;
 
+import dto.CollectionStatus;
 import requestCollection.address.dto.AddressResponseDTO;
 import requestCollection.address.dto.UserSummaryDTO;
 import requestCollection.collection.entity.Collection;
-import requestCollection.collection.entity.CollectionStatus;
 
 import java.util.UUID;
 

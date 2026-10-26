@@ -1,6 +1,6 @@
 package requestCollection.collection.dto;
 
-import requestCollection.collection.entity.CollectionStatus;
+import dto.CollectionStatus;
 
 import java.util.UUID;
 

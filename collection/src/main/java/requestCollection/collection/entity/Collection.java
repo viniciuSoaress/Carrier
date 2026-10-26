@@ -1,5 +1,6 @@
 package requestCollection.collection.entity;
 
+import dto.CollectionStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,8 @@ public class Collection {
     private String item_name;
     private Integer quantity;
     private Double weight;
+
+    @Enumerated(EnumType.STRING)
     private CollectionStatus status = CollectionStatus.PENDING;
 
 
