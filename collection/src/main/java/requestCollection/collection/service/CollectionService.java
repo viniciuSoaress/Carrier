@@ -1,8 +1,6 @@
 package requestCollection.collection.service;
 
-import dto.AddressDTO;
 import dto.CollectionSchema;
-import dto.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +10,7 @@ import requestCollection.address.repository.AddressRepository;
 import requestCollection.collection.dto.CollectionRequestDTO;
 import requestCollection.collection.dto.CollectionResponseDTO;
 import requestCollection.collection.entity.Collection;
+import requestCollection.collection.mapper.CollectionMapper;
 import requestCollection.collection.repository.CollectionRepository;
 import requestCollection.user.entity.User;
 import requestCollection.user.repository.UserRepository;
@@ -41,12 +40,18 @@ public class CollectionService {
 
         Address address = this.addressRepository.getReferenceById(data.address_id());
         User user = getUser(data.users_id());
-        Collection newCollection = new Collection(data.item_name(), data.quantity(), data.weight(), data.status(), user, address);
-        this.collectionRepository.save(newCollection);
+        Collection newCollection = new Collection(
+                data.item_name(),
+                data.quantity(),
+                data.weight(),
+                data.status(),
+                user,
+                address
+        );
 
-        CollectionSchema schema = CollectionSchema.fromEntity(newCollection);
-
-        this.producerCollection.sendCollection(schema);
+        Collection collection = this.collectionRepository.save(newCollection);
+        CollectionSchema collectionSchema = CollectionMapper.toDTO(collection);
+        this.producerCollection.sendCollection(collectionSchema);
     }
 
     public String deleteCollection(UUID id){
