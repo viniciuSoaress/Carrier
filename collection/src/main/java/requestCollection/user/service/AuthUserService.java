@@ -1,6 +1,5 @@
 package requestCollection.user.service;
 
-import requestCollection.user.config.security.AuthenticationService;
 import requestCollection.user.config.security.TokenService;
 import requestCollection.user.dto.AuthenticationDTO;
 import requestCollection.user.dto.LoginResponseDTO;
@@ -21,8 +20,8 @@ public class AuthUserService {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
 
-    public AuthUserService(UserRepository userRepository, AuthenticationService authenticationService, UserRepository userRepository1, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenService tokenService) {
-        this.userRepository = userRepository1;
+    public AuthUserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenService tokenService) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
