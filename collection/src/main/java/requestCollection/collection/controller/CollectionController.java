@@ -41,10 +41,10 @@ public class CollectionController {
         return ResponseEntity.ok(this.collectionService.getAllCollection(userId, page, size));
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> delete(@AuthenticationPrincipal User user){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal User user, @PathVariable UUID id){
         UUID userId = user.getId();
-        this.collectionService.deleteCollection(userId);
+        this.collectionService.deleteCollection(id, userId);
         return ResponseEntity.status(203).build();
     }
 }
