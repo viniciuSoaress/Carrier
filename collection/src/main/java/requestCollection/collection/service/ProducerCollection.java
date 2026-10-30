@@ -10,13 +10,13 @@ import java.util.UUID;
 public class ProducerCollection {
 
     private final static String TOPIC_NAME = "Carrier-module.";
-    private final KafkaTemplate<UUID, CollectionSchema> kafkaTemplate;
+    private final KafkaTemplate<String, CollectionSchema> kafkaTemplate;
 
-    public ProducerCollection(KafkaTemplate<UUID, CollectionSchema> kafkaTemplate) {
+    public ProducerCollection(KafkaTemplate<String, CollectionSchema> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
     public void sendCollection(CollectionSchema schema){
-        this.kafkaTemplate.send(TOPIC_NAME, schema.id(), schema);
+        this.kafkaTemplate.send(TOPIC_NAME, schema.id().toString(), schema);
     }
 }
