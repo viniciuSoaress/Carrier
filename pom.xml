@@ -24,6 +24,7 @@
     <modules>
         <module>collection</module>
         <module>schema</module>
+        <module>toRemove</module>
     </modules>
     <scm>
 		<connection/>

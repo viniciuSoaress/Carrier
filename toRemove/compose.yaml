@@ -1,0 +1,10 @@
+services:
+  postgres_db:
+    image: postgres:17-alpine
+    container_name: delivery_db
+    environment:
+      POSTGRES_DB: "delivery"
+      POSTGRES_USER: "delivery"
+      POSTGRES_PASSWORD: "olameusamigos"
+    ports:
+      - "6545:5432"
