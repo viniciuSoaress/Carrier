@@ -1,9 +1,8 @@
 package requestCollection.user.service;
 
+import domain.ModelsDto;
+import requestCollection.user.mapper.MapperModelsDto;
 import requestCollection.user.config.security.TokenService;
-import requestCollection.user.dto.AuthenticationDTO;
-import requestCollection.user.dto.LoginResponseDTO;
-import requestCollection.user.dto.RegisterDTO;
 import requestCollection.user.entity.User;
 import requestCollection.user.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,22 +26,22 @@ public class AuthUserService {
         this.tokenService = tokenService;
     }
 
-    public RegisterDTO register(RegisterDTO data){
+    public ModelsDto.RegisterDto register(ModelsDto.RegisterDto data){
         if (this.userRepository.findByEmail(data.email()) != null)
             throw new IllegalArgumentException("Login whit exist!");
 
         String passwordBCrypt = passwordEncoder.encode(data.password());
 
         User newuser = new User(data.name(), data.email(), passwordBCrypt, data.role());
-        return new RegisterDTO(this.userRepository.save(newuser));
+        return MapperModelsDto.toDto(this.userRepository.save(newuser));
     }
 
-    public LoginResponseDTO login(AuthenticationDTO data){
+    public ModelsDto.AuthenticationResponseDto login(ModelsDto.LoginDto data){
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                 = new UsernamePasswordAuthenticationToken( data.email(), data.password());
         Authentication auth = this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         String token = this.tokenService.generateToken((User) auth.getPrincipal());
 
-        return new LoginResponseDTO(token, ((User) auth.getPrincipal()).getId());
+        return new  ModelsDto.AuthenticationResponseDto(token, ((User) auth.getPrincipal()).getId());
     }
 }

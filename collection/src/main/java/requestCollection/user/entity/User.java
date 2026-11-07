@@ -1,5 +1,6 @@
 package requestCollection.user.entity;
 
+import domain.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

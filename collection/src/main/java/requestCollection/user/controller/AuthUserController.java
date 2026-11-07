@@ -1,8 +1,6 @@
 package requestCollection.user.controller;
 
-import requestCollection.user.dto.AuthenticationDTO;
-import requestCollection.user.dto.LoginResponseDTO;
-import requestCollection.user.dto.RegisterDTO;
+import domain.ModelsDto;
 import requestCollection.user.service.AuthUserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +20,13 @@ public class AuthUserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody @Valid RegisterDTO data){
+    public ResponseEntity<String> registerUser(@RequestBody @Valid ModelsDto.RegisterDto data){
         this.authUserService.register(data);
         return ResponseEntity.ok("created");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody @Valid AuthenticationDTO data){
+    public ResponseEntity<ModelsDto.AuthenticationResponseDto> loginUser(@RequestBody @Valid ModelsDto.LoginDto data){
         return ResponseEntity.ok(this.authUserService.login(data));
     }
 }
