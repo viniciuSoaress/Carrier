@@ -54,16 +54,15 @@ public class CollectionService {
         this.producerCollection.sendCollection(collectionSchema);
     }
 
-    public String deleteCollection(UUID collectionId, UUID userId) {
-        return collectionRepository.findById(collectionId)
+    public void deleteCollection(UUID collectionId, UUID userId) {
+        collectionRepository.findById(collectionId)
                 .map(collection -> {
                     if (collection.getUser().getId().equals(userId)) {
                         collectionRepository.delete(collection);
                         return "Deletado.";
                     }
                     return "Não autorizado.";
-                })
-                .orElse("Não encontrado.");
+                });
     }
 
     public Page<CollectionResponseDTO> getAllCollection(UUID userId, int page, int size){

@@ -1,15 +1,18 @@
 package requestCollection.user.config.security;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import security.CoreJwtUtil;
 
 import java.io.IOException;
 
@@ -19,11 +22,13 @@ public class SecurityFilter extends OncePerRequestFilter {
     private static final String AUTH_HEADER = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer ";
 
-    private final TokenService tokenService;
+    @Value("${api.secret.jwt.token}")
+    private String secret;
+
     private final AuthenticationService authenticationService;
 
-    public SecurityFilter(TokenService tokenService, AuthenticationService authenticationService) {
-        this.tokenService = tokenService;
+
+    public SecurityFilter(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
 
@@ -33,13 +38,18 @@ public class SecurityFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String token = recoverToken(request);
         if(token != null){
-            String login = tokenService.validateToken(token);
-            if(login != null && !login.isBlank()){
-                UserDetails user = authenticationService.loadUserByUsername(login);
-                Authentication authentication =
-                        new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            DecodedJWT jwt = CoreJwtUtil.validatedAndDecode(token, secret);
+            if(jwt != null){
+                String login = jwt.getSubject();
+
+                if(login != null && !login.isBlank()){
+                    UserDetails user = authenticationService.loadUserByUsername(login);
+                    Authentication authentication =
+                            new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
+
         }
         filterChain.doFilter(request, response);
     }
