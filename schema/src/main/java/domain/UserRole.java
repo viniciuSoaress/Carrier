@@ -1,9 +1,9 @@
 package domain;
 
 public enum UserRole {
-    BOSS("boss"), ADMIN("admin"), USER("user");
+    CARRIER("carrier"), USER("user");
 
-    private String role;
+    private final String role;
 
     UserRole(String role){ this.role = role;}
 
